@@ -2,7 +2,7 @@ services:
   orders: 
     build:
       context: .
-      dockerfile: ./apps/prders/Dockerfile
+      dockerfile: ./apps/orders/Dockerfile
       target: development
     command: npm run start:dev orders
     env_file:
@@ -16,7 +16,7 @@ services:
       - /usr/src/app/node_modules
     ports:
       - '3000:3000'
-      
+
   mongodb-primary:
     image: docker.io/bitnami/mongodb:5.0
     environment:
