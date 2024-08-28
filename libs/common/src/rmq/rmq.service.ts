@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { RmqOptions, Transport } from '@nestjs/microservices';
+import { RmqContext, RmqOptions, Transport } from '@nestjs/microservices';
 
 @Injectable({})
 export class RmqService {
   constructor(private readonly configService: ConfigService) {}
 
-  getOptions(queue: string, noAck: boolean = false): RmqOptions {
+  getOptions(queue: string, noAck = false): RmqOptions {
     return {
       transport: Transport.RMQ,
       options: {
@@ -16,5 +16,11 @@ export class RmqService {
         persistent: true,
       },
     };
+  }
+
+  ack(context: RmqContext) {
+    const channel = context.getChannelRef();
+    const originalMessage = context.getMessage();
+    channel.ack(originalMessage);
   }
 }
