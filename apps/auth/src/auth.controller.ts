@@ -1,12 +1,13 @@
-import { Controller, Post, Res, UseGuards } from '@nestjs/common';
+import { Controller, Logger, Post, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { CurrentUser } from './current-user.decorator';
 import { User } from './users/schemas/user.schema';
 
-@Controller()
+@Controller('auth')
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name);
   constructor(private readonly authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
@@ -15,6 +16,7 @@ export class AuthController {
     @CurrentUser() user: User,
     @Res({ passthrough: true }) response: Response,
   ) {
+    this.logger.debug(response);
     await this.authService.login(user, response);
     response.send(user);
   }
