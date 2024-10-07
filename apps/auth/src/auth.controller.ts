@@ -16,7 +16,7 @@ export class AuthController {
     @CurrentUser() user: User,
     @Res({ passthrough: true }) response: Response,
   ) {
-    this.logger.debug(response);
+    this.logger.debug(user);
     await this.authService.login(user, response);
     response.send(user);
   }

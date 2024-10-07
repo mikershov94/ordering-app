@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { RmqModule } from '@app/common';

@@ -3,7 +3,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { DatabaseModule, RmqModule } from '@app/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from './users/users.module';
 import { LocalStrategy } from './strategies/local.strategy';
@@ -26,6 +26,9 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: `${configService.get('JWT_EXPIRATION')}s`,
+        },
       }),
       inject: [ConfigService],
     }),
